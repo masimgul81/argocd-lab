@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-bucks
+  labels:
+    app: my-bucks
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-bucks
+  template:
+    metadata:
+      labels:
+        app: my-bucks
+    spec:
+      containers:
+      - name: my-bucks
+        image: g3niuz/mybucks:latest
+        ports:
+        - containerPort: 80
