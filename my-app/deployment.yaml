@@ -5,7 +5,7 @@ metadata:
   labels:
     app: my-nginx
 spec:
-  replicas: 5
+  replicas: 3
   selector:
     matchLabels:
       app: my-nginx
@@ -15,7 +15,7 @@ spec:
         app: my-nginx
     spec:
       containers:
-      - name: nginx
-        image: nginx:1.21
+      - name: myflix-container
+        image: g3niuz/myflix:latest
         ports:
         - containerPort: 80
