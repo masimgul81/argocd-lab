@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: my-bucks
-        image: g3niuz/mybucks:latest
+        image: g3niuz/alpine-star-bucks:latest
         ports:
         - containerPort: 80
