@@ -25,13 +25,13 @@ jobs:
         context: ./my-app
         push: true
         tags: |
-          g3nius/myflix:latest
-          g3nius/myflix:${{ github.sha }}
+          g3niuz/myflix:latest
+          g3niuz/myflix:${{ github.sha }}
 
     - name: Update Kubernetes Manifest
       run: |
         # Update deployment.yaml with the new SHA tag
-        sed -i "s|image: .*|image: g3nius/myflix:${{ github.sha }}|g" my-app/deployment.yaml
+        sed -i "s|image: .*|image: g3niuz/myflix:${{ github.sha }}|g" my-app/deployment.yaml
         
         # Commit back to repo
         git config --global user.name 'GitHub Actions'
