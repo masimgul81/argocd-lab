@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: myflix-container
-        image: g3niuz/myflix:5e016baf181353b899b362bdf06b464349d8a320
+        image: g3niuz/myflix:3fc1ab010ca17adf315135dd323d1ef5496e4734
         ports:
         - containerPort: 80
