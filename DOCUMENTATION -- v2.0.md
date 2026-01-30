@@ -17,67 +17,66 @@ graph TD
     classDef devops fill:#e1e4e8,stroke:#333,stroke-width:2px;
 
     subgraph "External World"
-        User[User / Laptop]
-        Dev[Developer]
-        DockerHub[Docker Hub Registry]
+        User["User / Laptop"]
+        Dev["Developer"]
+        DockerHub["Docker Hub Registry"]
     end
 
     subgraph "CI/CD Pipeline (GitHub)"
-        SourceRepo[Source Code Repo]
-        ConfigRepo[Config Repo]
-        Action[GitHub Actions]
-        Trivy[Trivy Security Scanner]
+        SourceRepo["Source Code Repo"]
+        ConfigRepo["Config Repo"]
+        Action["GitHub Actions"]
+        Trivy["Trivy Security Scanner"]
     end
 
     subgraph "AWS Cloud (VPC)"
-        SG[Security Group Firewall]
+        SG["Security Group Firewall"]
 
         subgraph "Kubernetes Cluster (v1.30)"
             subgraph "Control Plane"
-                API[API Server]
-                ArgoCD[ArgoCD Controller]
+                API["API Server"]
+                ArgoCD["ArgoCD Controller"]
             end
 
             subgraph "Worker Nodes"
                 Ingress["Nginx Ingress Controller<br/>Port: 31232"]
                 
                 subgraph "Namespace: Default"
-                    Svc1[My-Nginx Service]
+                    Svc1["My-Nginx Service"]
                     Pod1["Pod: MyFlix<br/>(HPA: 1-10 Replicas)"]
-                    Svc2[My-Bucks Service]
+                    Svc2["My-Bucks Service"]
                     Pod2["Pod: Bucks<br/>(Replica x2)"]
                 end
                 
                 subgraph "Namespace: Monitoring"
-                    Metrics[Metrics Server]
+                    Metrics["Metrics Server"]
                 end
             end
         end
     end
 
     %% DevOps Flow
-    Dev -->|1. Push Code| SourceRepo
-    SourceRepo -->|2. Trigger| Action
-    Action -->|3. Build & Scan| Trivy
-    Trivy -->|Pass| Action
-    Action -->|4. Push Image| DockerHub
-    Action -->|5. Update YAML| ConfigRepo
-    ArgoCD -->|6. Detect Change| ConfigRepo
-    ArgoCD -->|7. Sync & Apply| API
+    Dev -->|"1. Push Code"| SourceRepo
+    SourceRepo -->|"2. Trigger"| Action
+    Action -->|"3. Build & Scan"| Trivy
+    Trivy -->|"Pass"| Action
+    Action -->|"4. Push Image"| DockerHub
+    Action -->|"5. Update YAML"| ConfigRepo
+    ArgoCD -->|"6. Detect Change"| ConfigRepo
+    ArgoCD -->|"7. Sync & Apply"| API
 
     %% Traffic Flow
-    User -->|[http://myflix.local:31232](http://myflix.local:31232)| SG
+    User -->|"[http://myflix.local:31232](http://myflix.local:31232)"| SG
     SG --> Ingress
-    Ingress -->|Host: myflix.local| Svc1
+    Ingress -->|"Host: myflix.local"| Svc1
     Svc1 --> Pod1
-    Ingress -->|Host: bucks.local| Svc2
+    Ingress -->|"Host: bucks.local"| Svc2
     Svc2 --> Pod2
     
     %% Styles
     class SG,EC2 aws;
     class API,Ingress,Pod1,Pod2,Svc1,Svc2,ArgoCD,Metrics k8s;
     class SourceRepo,ConfigRepo,Action,Trivy,DockerHub devops;
-
 
 
 📋 1. Project Overview
@@ -204,3 +203,4 @@ Bash
 kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://my-nginx-service; done"
 
 Maintained by: Masim Gul (masimgul81)
+
