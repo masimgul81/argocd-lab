@@ -39,13 +39,13 @@ graph TD
             end
 
             subgraph "Worker Nodes"
-                Ingress[Nginx Ingress Controller<br/>Port: 31232]
+                Ingress["Nginx Ingress Controller<br/>Port: 31232"]
                 
                 subgraph "Namespace: Default"
                     Svc1[My-Nginx Service]
-                    Pod1[Pod: MyFlix<br/>(HPA: 1-10 Replicas)]
+                    Pod1["Pod: MyFlix<br/>(HPA: 1-10 Replicas)"]
                     Svc2[My-Bucks Service]
-                    Pod2[Pod: Bucks<br/>(Replica x2)]
+                    Pod2["Pod: Bucks<br/>(Replica x2)"]
                 end
                 
                 subgraph "Namespace: Monitoring"
@@ -202,4 +202,5 @@ Stress Test (Load Generator):
 
 Bash
 kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://my-nginx-service; done"
+
 Maintained by: Masim Gul (masimgul81)
