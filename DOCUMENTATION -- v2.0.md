@@ -66,7 +66,7 @@ graph TD
     ArgoCD -->|"7. Sync & Apply"| API
 
     %% Traffic Flow
-    User -->|"[http://myflix.local:31232](http://myflix.local:31232)"| SG
+    User -->|"http://myflix.local:31232"| SG
     SG --> Ingress
     Ingress -->|"Host: myflix.local"| Svc1
     Svc1 --> Pod1
@@ -78,6 +78,7 @@ graph TD
     class API,Ingress,Pod1,Pod2,Svc1,Svc2,ArgoCD,Metrics k8s;
     class SourceRepo,ConfigRepo,Action,Trivy,DockerHub devops;
 
+'''
 
 📋 1. Project Overview
 This platform is a production-grade Kubernetes environment built from scratch on AWS. It demonstrates the full "Zero to Hero" DevOps lifecycle, including Infrastructure as Code, GitOps delivery, automated security scanning, and traffic management.
@@ -203,4 +204,5 @@ Bash
 kubectl run -i --tty load-generator --rm --image=busybox --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://my-nginx-service; done"
 
 Maintained by: Masim Gul (masimgul81)
+
 
