@@ -19,3 +19,11 @@ spec:
         image: g3niuz/myflix:36ee2e23355b3c4858580df22dc3860ec2acf8e8
         ports:
         - containerPort: 80
+        # ADD THIS BLOCK BELOW:
+        resources:
+          requests:
+            cpu: "100m"   # 10% of a vCPU
+            memory: "128Mi"
+          limits:
+            cpu: "200m"   # Cap it at 20% so it doesn't kill the node
+            memory: "256Mi"
