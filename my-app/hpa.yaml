@@ -7,7 +7,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: my-nginx        # Must match your Deployment Name
-  minReplicas: 3          # Never go below 1
+  minReplicas: 1          # Never go below 1
   maxReplicas: 10         # Never go above 10 (Safety cap)
   metrics:
   - type: Resource
