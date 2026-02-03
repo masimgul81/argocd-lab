@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-exam
+  labels:
+    app: mysql-exam
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql-exam
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql-exam
+spec:
+  selector:
+    matchLabels:
+      app: mysql-exam
+  serviceName: "mysql-exam"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql-exam
+      annotations:
+        # 1. The Scratchpad Volume (You already have this)
+        backup.velero.io/backup-volumes: backup-scratch
+        
+        # 2. NEW: The "Auto-Dump" Command (The Hook)
+        # This tells Velero to run mysqldump BEFORE backing up
+        pre.hook.backup.velero.io/command: '["/bin/bash", "-c", "mysqldump -u root -ppassword123 --all-databases > /backup/dump.sql"]'
+        
+        # 3. Handling Errors: If the dump fails, fail the backup
+        pre.hook.backup.velero.io/onError: Fail
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "password123"
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+        - name: backup-scratch
+          mountPath: /backup
+      
+      # CORRECTION: "volumes" belongs here, under spec.template.spec
+      volumes:
+      - name: backup-scratch
+        emptyDir: {}
+
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "local-path"
+      resources:
+        requests:
+          storage: 1Gi
